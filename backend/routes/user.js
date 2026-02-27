@@ -1,14 +1,22 @@
 import { Router } from 'express';
-const router = Router();
-import { getUsers, getEmployees, getUser, updateUser, deleteUser } from '../controller/userController.js';
+import {
+    getUsers,
+    getEmployees,
+    getUser,
+    updateUser,
+    deleteUser
+} from '../controller/userController.js';
 import { protect, admin } from '../middleware/auth.js';
 
-router.get('/', protect, admin('admin'), getUsers);
-router.get('/employees', protect, admin('admin'), getEmployees);
+const router = Router();
+
+// Admin only routes
+router.get('/', protect, admin, getUsers);
+router.get('/employees', protect, admin, getEmployees);
 
 router.route('/:id')
-    .get(protect, admin('admin'), getUser)
-    .put(protect, admin('admin'), updateUser)
-    .delete(protect, admin('admin'), deleteUser);
+    .get(protect, admin, getUser)
+    .put(protect, admin, updateUser)
+    .delete(protect, admin, deleteUser);
 
 export default router;
